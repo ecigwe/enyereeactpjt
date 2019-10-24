@@ -5,11 +5,7 @@ import {
   Input,
   Tooltip,
   Icon,
-  Cascader,
   Select,
-  Row,
-  Col,
-  Checkbox,
   Button,
   Calendar,
   AutoComplete,
@@ -18,9 +14,7 @@ import {
 const { Option } = Select;
 const AutoCompleteOption = AutoComplete.Option;
 
-function onPanelChange(value, mode) {
-  console.log(value, mode);
-}
+
 
 
 
@@ -44,42 +38,29 @@ class FormApp extends Component {
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         console.log('Received values of form: ', values);
+        this.props.form.setFieldsVal({
+          [e.target.name]: e.target.value
+        });
         console.log(this.state)
       }
     });
   };
+   onPanelChange = (value, mode) => e => {
+    console.log(value, mode);
+    console.log(value._d)
+    
+    console.log(this.state)
+  }
 
   handleConfirmBlur = e => {
     const { value } = e.target;
     this.setState({ confirmDirty: this.state.confirmDirty || !!value });
+    
   };
 
-  // compareToFirstPassword = (rule, value, callback) => {
-  //   const { form } = this.props;
-  //   if (value && value !== form.getFieldValue('password')) {
-  //     callback('Two passwords that you enter is inconsistent!');
-  //   } else {
-  //     callback();
-  //   }
-  // };
+ 
 
-  // validateToNextPassword = (rule, value, callback) => {
-  //   const { form } = this.props;
-  //   if (value && this.state.confirmDirty) {
-  //     form.validateFields(['confirm'], { force: true });
-  //   }
-  //   callback();
-  // };
-
-  // handleWebsiteChange = value => {
-  //   let autoCompleteResult;
-  //   if (!value) {
-  //     autoCompleteResult = [];
-  //   } else {
-  //     autoCompleteResult = ['.com', '.org', '.net'].map(domain => `${value}${domain}`);
-  //   }
-  //   this.setState({ autoCompleteResult });
-  // };
+  
 
   render() {
     const { getFieldDecorator } = this.props.form;
@@ -155,7 +136,7 @@ class FormApp extends Component {
           {getFieldDecorator('Birthday', {
             rules: [{ required: true, message: 'What is your Birthday!' }],
           })(<div style={{ width: 300, border: '1px solid #d9d9d9', borderRadius: 4 }}>
-          <Calendar fullscreen={false} onPanelChange={onPanelChange} />
+          <Calendar fullscreen={false} onPanelChange={this.onPanelChange}  name="Birthday"/>
         </div>)}
         </Form.Item>
         
@@ -190,7 +171,7 @@ class FormApp extends Component {
         
         
         <Form.Item {...tailFormItemLayout}>
-          <Button type="primary" htmlType="submit" onSubmit={this.handleSubmit}>
+          <Button type="primary" htmlType="submit" >
            Submit
           </Button>
         </Form.Item>
